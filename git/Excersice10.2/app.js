@@ -10,7 +10,8 @@ const responseDetails = {
 };
 
 const data = {
-  title: "Hello world!",
+    title: "My Title",
+  heading: "My Heading"
 };
 
 const handleRequest = async (request) => {

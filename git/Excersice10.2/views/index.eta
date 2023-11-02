@@ -1,3 +1,4 @@
-<h1>
-  <%= it.title %>
-</h1>
+<% layout("./layouts/layout.eta") %>
+
+<h1><%= it.heading %></h1>
+<p>The content!</p>
