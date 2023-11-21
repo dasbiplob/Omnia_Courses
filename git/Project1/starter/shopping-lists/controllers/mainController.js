@@ -7,12 +7,13 @@ const responseDetails = {
   };
 
   /** Count Statistics */
-const getStatistics = async (request) => {
+  const getStatistics = async (request) => {
     const data = {
-        lists_num: await listService.getListNum(),
-        items_num: await itemService.getItemNum(),
-    }
+      lists_num: await listService.getListNum(),
+      items_num: await itemService.getItemNum(),
+    };
+    console.log('Data:', data);
     return new Response(await renderFile("index.eta", data), responseDetails);
-}
+  };
 
 export { getStatistics }

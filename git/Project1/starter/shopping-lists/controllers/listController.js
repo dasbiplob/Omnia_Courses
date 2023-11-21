@@ -7,8 +7,9 @@ const responseDetails = {
   headers: { "Content-Type": "text/html;charset=UTF-8" },
 };
 
-
+/** Process the request POST /lists */
 const addList = async (request) => {
+  // Get the data sent in the form
   const formData = await request.formData();
   const name = formData.get("name");
 
@@ -16,7 +17,7 @@ const addList = async (request) => {
 
   return requestUtils.redirectTo("/lists");
 };
-
+/** Process the request GET /lists */
 const viewLists = async (request) => {
   const data = {
     lists: await listService.getAllLists(),
@@ -24,7 +25,7 @@ const viewLists = async (request) => {
 
   return new Response(await renderFile("lists.eta", data), responseDetails);
 };
-
+/** Process the request GET /lists/id */
 const viewList = async (request) => {
   const url = new URL(request.url);
   const urlParts = url.pathname.split("/");
@@ -38,4 +39,16 @@ const viewList = async (request) => {
   return new Response(await renderFile("list.eta", data), responseDetails);
 };
 
-export { addList, viewLists, viewList };
+/** Process the request POST /lists/id */
+const updateLists = async (request) => {
+  // Get the id
+  const url = new URL(request.url);
+  const urlParts = url.pathname.split("/");
+  let id = urlParts[2]
+
+  // Update by id
+  await listService.updateById(id)
+
+  return requestUtils.redirectTo("/lists")
+}
+export { addList, viewLists, viewList, updateLists };

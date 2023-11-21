@@ -13,8 +13,8 @@
   <% it.items.forEach((item) => { %>
     <li>
       <form action="/lists/<%= item.shopping_list_id %>/items/<%= item.id %>/collect" method="POST">
-        <%= item.name %>
-        <input type="submit" value="Mark collected!" />
+       <%= item.name %>
+      <input type="submit" value="Mark collected!" />
       </form>
     </li>
   <% }) %>
