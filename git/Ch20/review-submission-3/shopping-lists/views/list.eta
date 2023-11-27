@@ -1,0 +1,31 @@
+<% layout("./layouts/layout.eta") %>
+
+<a href="/">Main page</a>
+
+<h1><%= it.name %></h1>
+
+<h2>Add a new item:</h2>
+<form method="POST" action="/lists/<%= it.id %>/items">
+  Item name: <input data-testid="item-name-input" type="text" name="name" /><br/>
+  <input data-testid="add-item-btn" type="submit" value="Add Item!" />
+</form>
+
+<h2>Shopping list items:</h2>
+<ul>
+	<% it.uncollectedItems.forEach((item) => { %>
+		<li>
+			<%= item.name %>
+			<form method="POST" action="/lists/<%= it.id %>/items/<%= item.id %>/collect">
+				<input data-testid="collect-item-btn" type="submit" value="Mark collected!" />
+			</form>
+		</li>
+	<% }); %>
+</ul>
+
+<ul>
+	<% it.collectedItems.forEach((item) => { %>
+		<li>
+			<del><%= item.name %></del>
+		</li>
+	<% }); %>
+</ul>
