@@ -1,19 +1,6 @@
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 import * as userService from "../../services/userService.js";
 
-// Authentication middleware
-const authenticationMiddleware = async (context, next) => {
-  // Check if the user is authenticated
-  if (await context.state.session.get("authenticated")) {
-    // User is authenticated, proceed to the next middleware or route handler
-    await next();
-  } else {
-    // User is not authenticated, set status to 401 (Unauthorized)
-    context.response.status = 401;
-    context.response.body = "Unauthorized access";
-  }
-};
-
 const showRegistrationForm = ({ render }) => {
   render("register.eta");
 };
@@ -66,7 +53,6 @@ const postLoginForm = async ({ request, response, state }) => {
     return;
   }
 
-
   await state.session.set("authenticated", true);
   await state.session.set("user", {
     id: userObj.id,
@@ -84,5 +70,4 @@ export {
   postRegistrationForm,
   showLoginForm,
   showRegistrationForm,
-  authenticationMiddleware
 };
