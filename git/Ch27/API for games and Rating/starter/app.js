@@ -28,8 +28,8 @@ const addGame = async ({ request, response }) => {
 
 // Delete a game
 const deleteGame = async ({ params, response }) => {
-  await sql`DELETE FROM games WHERE id = ${params.id}`;
   await sql`DELETE FROM ratings WHERE game_id = ${params.id}`;
+  await sql`DELETE FROM games WHERE id = ${params.id}`;
   response.body = { status: "success" };
 };
 

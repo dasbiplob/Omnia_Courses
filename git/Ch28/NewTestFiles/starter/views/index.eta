@@ -1,0 +1,3 @@
+<%~ includeFile('./partials/header.eta') %>
+<h1><%= it.hello %></h1>
+<%~ includeFile('./partials/footer.eta') %>

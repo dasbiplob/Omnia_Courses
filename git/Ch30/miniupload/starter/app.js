@@ -19,7 +19,6 @@ const showForm = ({ render }) => {
 };
 
 // Define the function to process file upload
-// Define the function to process file upload
 const processUpload = async ({ request, response }) => {
   const body = request.body({ type: "form-data" });
   const reader = await body.value;
@@ -44,18 +43,32 @@ const processUpload = async ({ request, response }) => {
     VALUES (${fileDetails.originalName}, ${fileDetails.contentType}, ${base64Encoded}, ${hashedPassword})`;
 
   // Respond with the generated password
-  response.body = `Your password is: ${password}`;
+  response.body = password; // Changed to respond with just the password
 };
 
 // Define the function to retrieve a file
-const getFile = async ({ params, request, response }) => {
-  // Extract password and id from the request body
-  const { password } = await request.body({ type: "form" }).value;
-  const fileId = params.id;
+const getFile = async ({ request, response }) => {
+  // Extract id and password from the request body
+  const body = request.body({ type: "form" });
+  const formData = await body.value;
+  const id = formData.get("id");
+  const password = formData.get("password");
+
+  if (!id || !password) {
+    response.status = 401;
+    response.body = "Unauthorized";
+    return;
+  }
 
   // Retrieve file details from the database using the id
-  const files = await sql`SELECT * FROM miniupload_files WHERE id = ${fileId}`;
+  const files = await sql`SELECT * FROM miniupload_files WHERE id = ${id}`;
   const file = files[0];
+
+  if (!file) {
+    response.status = 401;
+    response.body = "File not found or unauthorized access";
+    return;
+  }
 
   // Verify if the provided password matches the stored hashed password
   const passwordMatch = await bcrypt.compare(password, file.password);
@@ -73,10 +86,11 @@ const getFile = async ({ params, request, response }) => {
   }
 };
 
+
 // Attach routes
 router.get("/", showForm)
   .post("/", processUpload)
-  .post("/files/:id", getFile); // Add this line to handle POST requests to '/files/:id'
+  .post("/files", getFile); // Changed the route path to "/files" to handle POST requests without an id
 
 app.use(router.routes());
 
