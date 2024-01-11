@@ -58,7 +58,7 @@ const postLoginForm = async ({ request, response, state }) => {
     id: userObj.id,
     email: userObj.email,
   });
-  response.redirect("/");
+  response.redirect("/accounts");
 };
 
 const showLoginForm = ({ render }) => {
